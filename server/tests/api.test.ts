@@ -211,4 +211,24 @@ describe('API autenticada', () => {
       demo.body.user.id,
     );
   });
+  it('recria os dados da demonstração a cada entrada', async () => {
+    const token = (await request(app).post('/api/auth/demo')).body.token as string;
+    const list = await request(app).get('/api/transactions').auth(token, { type: 'bearer' });
+    // Um visitante apaga um lançamento e muda um orçamento...
+    await request(app)
+      .delete(`/api/transactions/${list.body[0].id}`)
+      .auth(token, { type: 'bearer' });
+    await request(app)
+      .put('/api/budgets/Lazer')
+      .auth(token, { type: 'bearer' })
+      .send({ limitCents: 1 });
+    // ...e o próximo visitante encontra tudo como no início.
+    const next = (await request(app).post('/api/auth/demo')).body.token as string;
+    expect(
+      (await request(app).get('/api/transactions').auth(next, { type: 'bearer' })).body,
+    ).toHaveLength(7);
+    const budgets = (await request(app).get('/api/budgets').auth(next, { type: 'bearer' }))
+      .body as { category: string; limitCents: number }[];
+    expect(budgets.find((b) => b.category === 'Lazer')?.limitCents).toBe(20000);
+  });
 });

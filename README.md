@@ -7,11 +7,11 @@ Aplicação full-stack de finanças pessoais: cada usuário cria sua conta, regi
 - **Back-end:** Node + TypeScript + Express 5, validação com Zod, login com JWT e senha com hash (bcrypt)
 - **Front-end:** React + TypeScript + Vite, gráficos em SVG sem biblioteca, tema claro e escuro
 - **Dados:** Postgres (Supabase) em produção; arquivo JSON no desenvolvimento local, sem instalar nada
-- **Testes:** Vitest + Supertest (38 testes)
+- **Testes:** Vitest + Supertest (40 testes)
 
 ## Funcionalidades
 
-- Cadastro, login e conta de demonstração; cada usuário só enxerga os próprios dados
+- Cadastro, login e conta de demonstração (recriada no mês atual a cada entrada); cada usuário só enxerga os próprios dados
 - Criar, editar e remover lançamentos
 - Painel com saldo, entradas, saídas e percentual guardado no mês
 - Gráfico de gastos por dia e rosca de despesas por categoria
@@ -33,7 +33,7 @@ Abra http://localhost:5173. A API sobe em http://localhost:3333 e o Vite repassa
 Sem configurar nada, os dados ficam em `server/data/finance.json`. Para usar um banco Postgres, copie `.env.example` para `.env` e preencha `DATABASE_URL` e `JWT_SECRET`.
 
 ```bash
-npm test          # 12 testes da API + 26 testes das funções do front
+npm test          # 13 testes da API + 27 testes das funções do front
 npm run typecheck # checagem de tipos do back e do front
 npm run build     # build de produção do front
 ```

@@ -38,6 +38,25 @@ function isDuplicate(error: unknown): boolean {
 export function authRoutes(storage: Storage, secret: string) {
   const router = Router();
   let demoPromise: Promise<StoredUser> | null = null;
+  let demoReset: Promise<unknown> = Promise.resolve();
+
+  // Apaga tudo da conta de demonstração e recria os exemplos no mês atual.
+  // Assim quem entra sempre vê o painel preenchido, mesmo meses depois ou
+  // se o visitante anterior apagou os lançamentos.
+  async function resetDemoData(userId: string) {
+    for (const t of await storage.listTransactions(userId))
+      await storage.removeTransaction(userId, t.id);
+    for (const b of await storage.listBudgets(userId))
+      await storage.removeBudget(userId, b.category);
+    for (const { id: _id, createdAt: _createdAt, ...data } of seedTransactions())
+      await storage.createTransaction(userId, data);
+    for (const [category, limit] of [
+      ['Alimentação', 80000],
+      ['Lazer', 20000],
+      ['Moradia', 200000],
+    ] as const)
+      await storage.setBudget(userId, category, limit);
+  }
   router.post('/register', async (req, res) => {
     const data = registerSchema.parse(req.body);
     if (
@@ -76,9 +95,8 @@ export function authRoutes(storage: Storage, secret: string) {
     demoPromise ??= (async () => {
       const existing = await storage.findUserByEmail('demo@exemplo.com');
       if (existing) return existing;
-      let user: StoredUser;
       try {
-        user = await storage.createUser({
+        return await storage.createUser({
           name: 'Visitante',
           email: 'demo@exemplo.com',
           passwordHash: await bcrypt.hash(randomBytes(32).toString('hex'), 10),
@@ -90,20 +108,15 @@ export function authRoutes(storage: Storage, secret: string) {
         }
         throw error;
       }
-      for (const { id: _id, createdAt: _createdAt, ...data } of seedTransactions())
-        await storage.createTransaction(user.id, data);
-      for (const [category, limit] of [
-        ['Alimentação', 80000],
-        ['Lazer', 20000],
-        ['Moradia', 200000],
-      ] as const)
-        await storage.setBudget(user.id, category, limit);
-      return user;
     })().catch((error: unknown) => {
       demoPromise = null;
       throw error;
     });
     const user = await demoPromise;
+    // As recriações entram em fila: dois acessos ao mesmo tempo não duplicam os dados.
+    const reset = demoReset.then(() => resetDemoData(user.id));
+    demoReset = reset.catch(() => undefined);
+    await reset;
     res.json({ token: signToken(user.id, secret), user: publicUser(user) });
   });
   router.get('/me', requireAuth(secret), async (_req, res) => {
