@@ -22,7 +22,7 @@
     "vitest": "^5.1.0"
   },
   "scripts": {
-    "dev": "tsx --env-file-if-exists=../.env watch src/index.ts",
+    "dev": "tsx watch --env-file-if-exists=../.env src/index.ts",
     "start": "tsx --env-file-if-exists=../.env src/index.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
