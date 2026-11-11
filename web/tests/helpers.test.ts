@@ -127,3 +127,13 @@ describe('orçamentos', () => {
     ]);
   });
 });
+
+describe('categorias sugeridas', () => {
+  it('sugere categorias de entrada para entradas e de gasto para saídas', async () => {
+    const { categoriesFor } = await import('../src/categories');
+    expect(categoriesFor('income')).toContain('Investimentos');
+    expect(categoriesFor('income')).not.toContain('Moradia');
+    expect(categoriesFor('expense')).toContain('Moradia');
+    expect(categoriesFor('expense')).not.toContain('Salário');
+  });
+});

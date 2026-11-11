@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import type { NewTransaction, Transaction, TransactionType } from '../../../shared/types';
 import { RequestError } from '../api';
+import { categoriesFor } from '../categories';
 import { parseAmountToCents } from '../money';
 
 const fieldNames: Record<string, string> = {
@@ -11,7 +12,6 @@ const fieldNames: Record<string, string> = {
   category: 'Categoria',
   date: 'Data',
 };
-const categories = ['Alimentação', 'Moradia', 'Transporte', 'Lazer', 'Salário', 'Outros'];
 
 function today() {
   const now = new Date();
@@ -39,6 +39,19 @@ export function TransactionForm({ onCreate, editing, onCancel }: Props) {
   const [date, setDate] = useState(editing?.date ?? today());
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
+  const suggestions = categoriesFor(type);
+
+  // Ao trocar entre Entrada e Saída, limpa a categoria se ela era uma sugestão
+  // do outro tipo (ex.: "Moradia" não faz sentido numa entrada).
+  function changeType(newType: TransactionType) {
+    if (
+      categoriesFor(type).includes(category) &&
+      !categoriesFor(newType).includes(category)
+    ) {
+      setCategory('');
+    }
+    setType(newType);
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -98,7 +111,7 @@ export function TransactionForm({ onCreate, editing, onCancel }: Props) {
                 name="type"
                 value="expense"
                 checked={type === 'expense'}
-                onChange={() => setType('expense')}
+                onChange={() => changeType('expense')}
               />
               <span>Saída</span>
             </label>
@@ -108,7 +121,7 @@ export function TransactionForm({ onCreate, editing, onCancel }: Props) {
                 name="type"
                 value="income"
                 checked={type === 'income'}
-                onChange={() => setType('income')}
+                onChange={() => changeType('income')}
               />
               <span>Entrada</span>
             </label>
@@ -121,7 +134,9 @@ export function TransactionForm({ onCreate, editing, onCancel }: Props) {
             value={description}
             maxLength={120}
             onChange={(event) => setDescription(event.target.value)}
-            placeholder="Ex.: Supermercado"
+            placeholder={
+              type === 'income' ? 'Ex.: Salário de novembro' : 'Ex.: Supermercado'
+            }
           />
         </div>
         <div className="field">
@@ -141,19 +156,19 @@ export function TransactionForm({ onCreate, editing, onCancel }: Props) {
           <label htmlFor="category">Categoria</label>
           <input
             id="category"
-            list="categories"
+            list="transaction-categories"
             maxLength={40}
             value={category}
             onChange={(event) => setCategory(event.target.value)}
-            placeholder="Ex.: Alimentação"
+            placeholder={`Ex.: ${suggestions[0]}`}
           />
-          <datalist id="categories">
-            {categories.map((item) => (
+          <datalist id="transaction-categories">
+            {suggestions.map((item) => (
               <option key={item} value={item} />
             ))}
           </datalist>
           <div className="chips" aria-label="Sugestões de categoria">
-            {categories.map((item) => (
+            {suggestions.map((item) => (
               <button
                 key={item}
                 type="button"

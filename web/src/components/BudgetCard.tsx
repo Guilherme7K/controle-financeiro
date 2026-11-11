@@ -3,6 +3,7 @@ import type { FormEvent } from 'react';
 import type { Budget, CategoryTotal } from '../../../shared/types';
 import { RequestError } from '../api';
 import { calculateBudgets } from '../budgets';
+import { expenseCategories } from '../categories';
 import { formatCents, parseAmountToCents } from '../money';
 type Props = {
   budgets: Budget[];
@@ -97,12 +98,18 @@ export function BudgetCard({ budgets, expenses, onSet, onRemove }: Props) {
           <label htmlFor="budget-category">Categoria</label>
           <input
             id="budget-category"
-            list="categories"
+            list="budget-categories"
             maxLength={40}
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             placeholder="Ex.: Alimentação"
           />
+          {/* Orçamento é limite de gasto, então só sugere categorias de saída. */}
+          <datalist id="budget-categories">
+            {expenseCategories.map((item) => (
+              <option key={item} value={item} />
+            ))}
+          </datalist>
         </div>
         <div className="field">
           <label htmlFor="budget-amount">Limite</label>
