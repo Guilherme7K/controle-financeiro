@@ -40,9 +40,10 @@ npm run build     # build de produção do front
 
 ```
 shared/types.ts          Contrato da API, usado pelo back e pelo front
-api/index.ts             Ponto de entrada na Vercel (reaproveita o app Express)
+vercel.json              Deploy na Vercel: API e site como dois serviços de um só projeto
 server/src/
   index.ts               Ponto de entrada local: escolhe o armazenamento e sobe o servidor
+  vercel.ts              Ponto de entrada na Vercel: exporta o mesmo app, sem listen()
   app.ts                 Monta o app: rotas, proteção por login e tratamento de erros
   auth.ts                Criação e verificação do token JWT (middleware requireAuth)
   schemas.ts             Validação dos dados de entrada (Zod)
@@ -108,7 +109,7 @@ Todas as rotas, exceto as de `/api/auth` e `/api/health`, exigem o cabeçalho `A
 
 ## Deploy na Vercel com Supabase
 
-O front é servido como site estático (`web/dist`) e a API roda como função serverless a partir de `api/index.ts`. O `vercel.json` define o build e encaminha `/api/*` para a função.
+O projeto usa os **Services** da Vercel: um único projeto com dois serviços definidos no `vercel.json`. O serviço `web` é o site React (build do Vite) e o serviço `server` é a API Express, que vira uma função serverless a partir de `server/src/vercel.ts`. Pedidos para `/api/*` vão para a API; todo o resto vai para o site. Tudo fica no mesmo domínio, então o front chama `/api` sem configurar endereço nenhum.
 
 Variáveis de ambiente necessárias no projeto da Vercel:
 
