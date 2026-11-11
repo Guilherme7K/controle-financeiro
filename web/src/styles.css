@@ -230,7 +230,7 @@ h2 {
 /* Cabeçalho do mês: saldo e gastos por dia */
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(240px, 0.75fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 40px;
   padding: 36px 0 34px;
   margin-bottom: 28px;
@@ -320,12 +320,13 @@ h2 {
 }
 .daily-chart svg {
   width: 100%;
-  height: 88px;
+  height: 120px;
   overflow: visible;
   border-bottom: 1px solid var(--rule-strong);
 }
+/* Barras em tinta mais escura que o papel; o dia de hoje em azul de caneta */
 .daily-bar {
-  fill: var(--rule-strong);
+  fill: color-mix(in srgb, var(--muted) 70%, var(--page));
   transform-box: fill-box;
   transform-origin: bottom;
   animation: bar-in 400ms ease-out both;
@@ -841,11 +842,69 @@ input:hover {
 }
 
 /* Tela de acesso */
+/* Fundo pautado bem leve, como a folha de um caderno */
 .auth-page {
   min-height: 100vh;
   display: grid;
-  place-items: center;
+  grid-template-columns: min(100%, 400px);
+  align-content: center;
+  justify-content: center;
+  gap: 18px;
   padding: 24px 16px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 31px,
+    color-mix(in srgb, var(--rule) 60%, transparent) 31px 32px
+  );
+}
+.demo-box {
+  padding: 14px;
+  margin-bottom: 18px;
+  background: var(--page);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+}
+.demo-box p {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+.demo-box .demo-button {
+  margin-top: 0;
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.demo-box .demo-button:hover {
+  color: #fff;
+  background: var(--accent);
+}
+[data-theme='dark'] .demo-box .demo-button:hover {
+  color: #15130f;
+}
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+.auth-footer {
+  max-width: 400px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+.auth-footer a {
+  color: var(--accent);
+  text-underline-offset: 3px;
 }
 .auth-card {
   width: min(100%, 400px);
@@ -853,7 +912,7 @@ input:hover {
 }
 .auth-brand {
   display: block;
-  margin-bottom: 26px;
+  margin-bottom: 22px;
 }
 .auth-tagline {
   margin-top: 12px;
@@ -932,24 +991,24 @@ input:hover {
   .container {
     padding: 0 16px 48px;
   }
+  /* Topo em duas linhas: nome e usuário em cima, mês e tema embaixo */
   .topbar {
     flex-wrap: wrap;
-    gap: 16px;
-    padding: 20px 0 16px;
+    gap: 14px 12px;
+    padding: 18px 0 14px;
   }
   .topbar-actions {
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 12px;
-    width: 100%;
+    display: contents;
   }
   .user-actions {
-    order: 3;
-    width: 100%;
-    justify-content: space-between;
+    margin-left: auto;
+  }
+  .month-nav {
+    width: calc(100% - 44px);
   }
   .month-nav span {
-    min-width: 140px;
+    flex: 1;
+    min-width: 0;
   }
   .hero {
     padding: 26px 0;

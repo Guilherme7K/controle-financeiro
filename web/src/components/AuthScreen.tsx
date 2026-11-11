@@ -55,6 +55,21 @@ export function AuthScreen({ onAuthenticated }: Props) {
           <Wordmark />
           <p className="auth-tagline">Suas contas do mês, anotadas em um só lugar.</p>
         </div>
+        {/* Quem visita pela primeira vez (ex.: um recrutador) entra sem cadastro. */}
+        <div className="demo-box">
+          <p>Quer só conhecer? Entre numa conta com dados de exemplo.</p>
+          <button
+            className="secondary-button demo-button"
+            type="button"
+            disabled={busy}
+            onClick={() => void run(demoLogin)}
+          >
+            Entrar com conta de demonstração
+          </button>
+        </div>
+        <p className="auth-divider">
+          <span>ou use sua conta</span>
+        </p>
         <div className="filter-segment auth-switch" role="group" aria-label="Acesso">
           {(
             [
@@ -128,15 +143,11 @@ export function AuthScreen({ onAuthenticated }: Props) {
             {busy ? 'Aguarde...' : mode === 'login' ? 'Entrar' : 'Criar conta'}
           </button>
         </form>
-        <button
-          className="secondary-button demo-button"
-          type="button"
-          disabled={busy}
-          onClick={() => void run(demoLogin)}
-        >
-          Entrar com conta de demonstração
-        </button>
       </section>
+      <p className="auth-footer">
+        Projeto de portfólio feito com React, Node.js e PostgreSQL ·{' '}
+        <a href="https://github.com/Guilherme7K/controle-financeiro">ver o código</a>
+      </p>
     </main>
   );
 }

@@ -17,7 +17,7 @@ export function DailyChart({ transactions, month }: Props) {
     <figure className="daily-chart">
       <figcaption>
         <span>Gastos por dia</span>
-        <span>{String(totals.length).padStart(2, '0')} dias</span>
+        <span>{largest > 0 ? `maior dia: ${formatCents(largest)}` : 'sem gastos'}</span>
       </figcaption>
       <svg
         viewBox={`0 0 ${width} 88`}
