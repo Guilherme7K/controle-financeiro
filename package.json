@@ -1,0 +1,19 @@
+{
+  "name": "controle-financeiro",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Controle financeiro pessoal — API Node + TypeScript e front React",
+  "workspaces": [
+    "server",
+    "web"
+  ],
+  "devDependencies": {
+    "concurrently": "^10.0.7"
+  },
+  "scripts": {
+    "dev": "concurrently -n api,web -c blue,green \"npm run dev -w server\" \"npm run dev -w web\"",
+    "test": "npm run test -w server && npm run test -w web",
+    "typecheck": "npm run typecheck -w server && npm run typecheck -w web",
+    "build": "npm run build -w web"
+  }
+}
