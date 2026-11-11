@@ -37,9 +37,10 @@ function initialTheme(): Theme {
     const saved = localStorage.getItem('theme');
     if (saved === 'light' || saved === 'dark') return saved;
   } catch {
-    // A preferência do sistema continua disponível.
+    // Sem acesso ao armazenamento, segue com o tema padrão.
   }
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  // O tema claro ("papel") é a identidade do app, então é o padrão na primeira visita.
+  return 'light';
 }
 
 export default function App() {

@@ -1,4 +1,6 @@
-# Controle Financeiro
+# Caderneta
+
+Controle financeiro pessoal com cara de caderno de contas: papel creme, tinta azul, linhas pautadas e valores alinhados em coluna (fontes IBM Plex: serifada nos títulos e no saldo, monoespaçada nos valores). O saldo leva sublinhado duplo, como os totais de um livro-caixa.
 
 Aplicação full-stack de finanças pessoais: cada usuário cria sua conta, registra entradas e saídas, acompanha o saldo do mês em gráficos e define orçamentos por categoria.
 

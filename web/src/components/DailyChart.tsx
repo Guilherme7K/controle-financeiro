@@ -35,7 +35,7 @@ export function DailyChart({ transactions, month }: Props) {
               y={88 - height}
               width={barWidth}
               height={height}
-              rx="2"
+              rx="1"
             >
               <title>{`${String(index + 1).padStart(2, '0')}/${month.slice(5)}: ${formatCents(total)}`}</title>
             </rect>

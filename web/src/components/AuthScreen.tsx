@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import type { AuthResponse } from '../../../shared/types';
 import { demoLogin, login, register, RequestError } from '../api';
+import { Wordmark } from './Wordmark';
 
 type Props = { onAuthenticated: (response: AuthResponse) => void };
 export function AuthScreen({ onAuthenticated }: Props) {
@@ -51,16 +52,8 @@ export function AuthScreen({ onAuthenticated }: Props) {
     <main className="auth-page">
       <section className="card auth-card">
         <div className="brand auth-brand">
-          <svg viewBox="0 0 32 32" aria-hidden="true" className="brand-mark">
-            <rect x="1" y="1" width="30" height="30" rx="9" fill="currentColor" />
-            <path
-              d="M8 21V16M13 21V11M18 21V14M23 21V8"
-              stroke="white"
-              strokeWidth="2.3"
-              strokeLinecap="round"
-            />
-          </svg>
-          <h1>Controle financeiro</h1>
+          <Wordmark />
+          <p className="auth-tagline">Suas contas do mês, anotadas em um só lugar.</p>
         </div>
         <div className="filter-segment auth-switch" role="group" aria-label="Acesso">
           {(

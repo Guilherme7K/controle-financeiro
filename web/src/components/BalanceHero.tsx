@@ -1,4 +1,5 @@
 import type { Summary, Transaction } from '../../../shared/types';
+import { formatMonth } from '../dates';
 import { formatCents } from '../money';
 import { DailyChart } from './DailyChart';
 
@@ -14,32 +15,28 @@ export function BalanceHero({ summary, transactions, month }: Props) {
   return (
     <section className="hero" aria-label="Resumo do mês">
       <div className="hero-main">
-        <p className="eyebrow">Saldo do mês</p>
+        <p className="hero-label">Saldo de {formatMonth(month).toLowerCase()}</p>
         <strong className={`hero-balance${balanceCents >= 0 ? ' positive' : ''}`}>
           {formatCents(balanceCents)}
         </strong>
         <div className="hero-stats">
           <div className="hero-stat">
-            <span className="stat-icon">
-              <svg viewBox="0 0 20 20" aria-hidden="true">
-                <path d="M10 15V5m-4 4 4-4 4 4" />
-              </svg>
-            </span>
-            <div>
-              <span>Entradas</span>
-              <strong>{formatCents(incomeCents)}</strong>
-            </div>
+            <span>Entradas</span>
+            <strong>
+              <span className="income" aria-hidden="true">
+                +
+              </span>{' '}
+              {formatCents(incomeCents)}
+            </strong>
           </div>
           <div className="hero-stat">
-            <span className="stat-icon">
-              <svg viewBox="0 0 20 20" aria-hidden="true">
-                <path d="M10 5v10m-4-4 4 4 4-4" />
-              </svg>
-            </span>
-            <div>
-              <span>Saídas</span>
-              <strong>{formatCents(expenseCents)}</strong>
-            </div>
+            <span>Saídas</span>
+            <strong>
+              <span className="expense" aria-hidden="true">
+                −
+              </span>{' '}
+              {formatCents(expenseCents)}
+            </strong>
           </div>
         </div>
         {incomeCents > 0 && (

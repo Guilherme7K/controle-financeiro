@@ -104,13 +104,10 @@ export function TransactionList({ transactions, colors, onDelete, onEdit }: Prop
                     return (
                       <li key={item.id}>
                         <span
-                          className="category-badge"
-                          style={{
-                            backgroundColor: `color-mix(in srgb, ${color} 16%, var(--surface))`,
-                          }}
-                        >
-                          {item.category.trim().charAt(0).toLocaleUpperCase('pt-BR')}
-                        </span>
+                          className="category-marker"
+                          aria-hidden="true"
+                          style={{ backgroundColor: color }}
+                        />
                         <div className="transaction-info">
                           <strong>{item.description}</strong>
                           <span>{item.category}</span>

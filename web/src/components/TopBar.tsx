@@ -1,4 +1,5 @@
 import { formatMonth, shiftMonth } from '../dates';
+import { Wordmark } from './Wordmark';
 
 type Props = {
   month: string;
@@ -20,16 +21,7 @@ export function TopBar({
   return (
     <header className="topbar">
       <div className="brand">
-        <svg viewBox="0 0 32 32" aria-hidden="true" className="brand-mark">
-          <rect x="1" y="1" width="30" height="30" rx="9" fill="currentColor" />
-          <path
-            d="M8 21V16M13 21V11M18 21V14M23 21V8"
-            stroke="white"
-            strokeWidth="2.3"
-            strokeLinecap="round"
-          />
-        </svg>
-        <h1>Controle financeiro</h1>
+        <Wordmark />
       </div>
       <div className="topbar-actions">
         <div className="user-actions">

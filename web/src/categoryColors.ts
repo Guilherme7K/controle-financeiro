@@ -1,14 +1,15 @@
 import type { CategoryTotal } from '../../shared/types';
 
+// Tons terrosos e discretos, como lápis de cor sobre papel.
 const palette = [
-  '#2f8f6b',
-  '#e0a23b',
-  '#4f7cc4',
-  '#c8553d',
-  '#8a6fbf',
-  '#4fa7a1',
-  '#b0637f',
-  '#7d8c3c',
+  '#2c4f86',
+  '#b5762a',
+  '#4f7a52',
+  '#a33b2c',
+  '#6b5b95',
+  '#3f7f86',
+  '#8a5a44',
+  '#7d7f3a',
 ];
 
 export function buildCategoryColors(items: CategoryTotal[]): Map<string, string> {
